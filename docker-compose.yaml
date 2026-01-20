@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # API Monsters
   api_monsters:
@@ -9,12 +7,12 @@ services:
     container_name: api_monsters
     ports:
       - "8081:8080"
-    # environment:
-    #   - SPRING_DATA_MONGODB_HOST=mongo-monsters
-    #   - SPRING_DATA_MONGODB_PORT=27017
-    #   - SPRING_DATA_MONGODB_DATABASE=monsters_db
-    # depends_on:
-    #   - mongo-monsters
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo_monsters
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=monsters_db
+    depends_on:
+      - mongo_monsters
     networks:
       - api_network
     healthcheck:
@@ -22,6 +20,18 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+  
+  mongo_monsters:
+    image: mongo:latest
+    container_name: mongo_monsters
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_DATABASE: monsters_db
+    volumes:
+      - mongo_monsters_data:/data/db
+    networks:
+      - api_network
 
   # API Joueur
   api_joueur:
@@ -32,11 +42,11 @@ services:
     ports:
       - "8082:8080"
     environment:
-      - SPRING_DATA_MONGODB_HOST=mongo-player
+      - SPRING_DATA_MONGODB_HOST=mongo_player
       - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=gatcha-player-db
     depends_on:
-      - mongo-player
+      - mongo_player
     networks:
       - api_network
     healthcheck:
@@ -45,11 +55,11 @@ services:
       timeout: 10s
       retries: 3
 
-  mongo-player:
-    image: mongo:7.0
-    container_name: mongo-player
+  mongo_player:
+    image: mongo:latest
+    container_name: mongo_player
     ports:
-      - "27018:27017"
+      - "27019:27017"
     environment:
       - MONGO_INITDB_DATABASE=gatcha-player-db
     volumes:
@@ -67,7 +77,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATA_MONGODB_HOST=api_invocations_mongo
+      - SPRING_DATA_MONGODB_HOST=mongo_invocations
       - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=api_invocationsdb
       - EXTERNAL_API_MONSTERS_BASE_URL=http://api_monsters:8080
@@ -75,7 +85,7 @@ services:
       - EXTERNAL_API_CONNECTION_TIMEOUT=5000
       - EXTERNAL_API_READ_TIMEOUT=5000
     depends_on:
-      - api_invocations_mongo
+      - mongo_invocations
       - api_monsters
       - api_joueur
     networks:
@@ -86,9 +96,9 @@ services:
       timeout: 10s
       retries: 3
 
-  api_invocations_mongo:
-    image: mongo:7.0
-    container_name: api_invocations_mongo
+  mongo_invocations:
+    image: mongo:latest
+    container_name: mongo_invocations
     ports:
       - "27017:27017"
     environment:
