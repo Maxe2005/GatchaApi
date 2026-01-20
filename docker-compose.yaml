@@ -1,18 +1,18 @@
 services:
   # API Monsters
-  api_monsters:
+  api-monsters:
     build:
       context: ./API_monstres
       dockerfile: Dockerfile
-    container_name: api_monsters
+    container_name: api-monsters
     ports:
       - "8081:8080"
     environment:
-      - SPRING_DATA_MONGODB_HOST=mongo_monsters
+      - SPRING_DATA_MONGODB_HOST=mongo-monsters
       - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=monsters_db
     depends_on:
-      - mongo_monsters
+      - mongo-monsters
     networks:
       - api_network
     healthcheck:
@@ -20,33 +20,33 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-  
-  mongo_monsters:
+
+  mongo-monsters:
     image: mongo:latest
-    container_name: mongo_monsters
+    container_name: mongo-monsters
     ports:
       - "27018:27017"
     environment:
       MONGO_INITDB_DATABASE: monsters_db
     volumes:
-      - mongo_monsters_data:/data/db
+      - mongo-monsters_data:/data/db
     networks:
       - api_network
 
   # API Joueur
-  api_joueur:
+  api-joueur:
     build:
       context: ./API_joueur
       dockerfile: Dockerfile
-    container_name: api_joueur
+    container_name: api-joueur
     ports:
       - "8082:8080"
     environment:
-      - SPRING_DATA_MONGODB_HOST=mongo_player
+      - SPRING_DATA_MONGODB_HOST=mongo-player
       - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=gatcha-player-db
     depends_on:
-      - mongo_player
+      - mongo-player
     networks:
       - api_network
     healthcheck:
@@ -55,13 +55,13 @@ services:
       timeout: 10s
       retries: 3
 
-  mongo_player:
+  mongo-player:
     image: mongo:latest
-    container_name: mongo_player
+    container_name: mongo-player
     ports:
       - "27019:27017"
     environment:
-      - MONGO_INITDB_DATABASE=gatcha-player-db
+      MONGO_INITDB_DATABASE: gatcha-player-db
     volumes:
       - ./API_joueur/mongo-init:/docker-entrypoint-initdb.d
       - mongodb_player_data:/data/db
@@ -69,25 +69,25 @@ services:
       - api_network
 
   # API Invocations
-  api_invocations:
+  api-invocations:
     build:
       context: ./API_invocations
       dockerfile: Dockerfile
-    container_name: api_invocations
+    container_name: api-invocations
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATA_MONGODB_HOST=mongo_invocations
+      - SPRING_DATA_MONGODB_HOST=mongo-invocations
       - SPRING_DATA_MONGODB_PORT=27017
-      - SPRING_DATA_MONGODB_DATABASE=api_invocationsdb
-      - EXTERNAL_API_MONSTERS_BASE_URL=http://api_monsters:8080
-      - EXTERNAL_API_PLAYER_BASE_URL=http://api_joueur:8080
+      - SPRING_DATA_MONGODB_DATABASE=api-invocationsdb
+      - EXTERNAL_API_MONSTERS_BASE_URL=http://api-monsters:8080
+      - EXTERNAL_API_PLAYER_BASE_URL=http://api-joueur:8080
       - EXTERNAL_API_CONNECTION_TIMEOUT=5000
       - EXTERNAL_API_READ_TIMEOUT=5000
     depends_on:
-      - mongo_invocations
-      - api_monsters
-      - api_joueur
+      - mongo-invocations
+      - api-monsters
+      - api-joueur
     networks:
       - api_network
     healthcheck:
@@ -96,15 +96,15 @@ services:
       timeout: 10s
       retries: 3
 
-  mongo_invocations:
+  mongo-invocations:
     image: mongo:latest
-    container_name: mongo_invocations
+    container_name: mongo-invocations
     ports:
-      - "27017:27017"
+      - "27020:27017"
     environment:
-      MONGO_INITDB_DATABASE: api_invocationsdb
+      MONGO_INITDB_DATABASE: api-invocationsdb
     volumes:
-      - mongo_invocations_data:/data/db
+      - mongo-invocations_data:/data/db
     networks:
       - api_network
 
@@ -113,6 +113,6 @@ networks:
     driver: bridge
 
 volumes:
-  mongo_monsters_data:
+  mongo-monsters_data:
   mongodb_player_data:
-  mongo_invocations_data:
+  mongo-invocations_data:
