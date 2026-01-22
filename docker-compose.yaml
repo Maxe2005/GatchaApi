@@ -1,4 +1,18 @@
 services:
+  # Gatcha Front
+  gatcha-front:
+    build:
+      context: ../Gatcha_Front
+      dockerfile: Dockerfile
+    container_name: gatcha-front
+    ports:
+      - "3000:80"
+    depends_on:
+      - api-authentification
+      - api-invocations
+    networks:
+      - api_network
+
   # API Authentification
   api-authentification:
     build:
