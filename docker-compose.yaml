@@ -118,12 +118,14 @@ services:
       - SPRING_DATA_MONGODB_DATABASE=api-invocationsdb
       - EXTERNAL_API_MONSTERS_BASE_URL=http://api-monsters:8080
       - EXTERNAL_API_PLAYER_BASE_URL=http://api-joueur:8080
+      - EXTERNAL_API_AUTH_BASE_URL=http://api-authentification:8080
       - EXTERNAL_API_CONNECTION_TIMEOUT=5000
       - EXTERNAL_API_READ_TIMEOUT=5000
     depends_on:
       - mongo-invocations
       - api-monsters
       - api-joueur
+      - api-authentification
     networks:
       - api_network
     healthcheck:
