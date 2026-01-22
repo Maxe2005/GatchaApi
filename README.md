@@ -15,5 +15,5 @@ docker compose up -d
 
 ```bash
 docker compose down
-docker compose build --no-cache api_joueur
+docker compose build --no-cache api-joueur
 ```

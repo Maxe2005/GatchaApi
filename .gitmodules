@@ -1,7 +1,7 @@
 [submodule "API_authentification"]
 	path = API_authentification
 	url = https://github.com/Maxe2005/API_authentification.git
-	branch = master
+	branch = maxDevTest
 [submodule "API_joueur"]
 	path = API_joueur
 	url = https://github.com/Maxe2005/API_joueur.git

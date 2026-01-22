@@ -1,18 +1,18 @@
 services:
-  # API Monsters
-  api-monsters:
+  # API Authentification
+  api-authentification:
     build:
-      context: ./API_monstres
+      context: ./API_authentification
       dockerfile: Dockerfile
-    container_name: api-monsters
+    container_name: api-authentification
     ports:
       - "8081:8080"
     environment:
-      - SPRING_DATA_MONGODB_HOST=mongo-monsters
+      - SPRING_DATA_MONGODB_HOST=mongo-authentification
       - SPRING_DATA_MONGODB_PORT=27017
-      - SPRING_DATA_MONGODB_DATABASE=monsters_db
+      - SPRING_DATA_MONGODB_DATABASE=auth_db
     depends_on:
-      - mongo-monsters
+      - mongo-authentification
     networks:
       - api_network
     healthcheck:
@@ -20,16 +20,18 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-
-  mongo-monsters:
+  mongo-authentification:
     image: mongo:latest
-    container_name: mongo-monsters
+    container_name: mongo-authentification
     ports:
-      - "27018:27017"
+      - '27019:27017'
+    restart: on-failure
     environment:
-      MONGO_INITDB_DATABASE: monsters_db
+      MONGO_INITDB_DATABASE: auth_db
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
-      - mongo-monsters_data:/data/db
+      - mongo-authentification_data:/data/db
     networks:
       - api_network
 
@@ -59,12 +61,46 @@ services:
     image: mongo:latest
     container_name: mongo-player
     ports:
-      - "27019:27017"
+      - "27020:27017"
     environment:
       MONGO_INITDB_DATABASE: gatcha-player-db
     volumes:
       - ./API_joueur/mongo-init:/docker-entrypoint-initdb.d
       - mongodb_player_data:/data/db
+    networks:
+      - api_network
+
+  # API Monsters
+  api-monsters:
+    build:
+      context: ./API_monstres
+      dockerfile: Dockerfile
+    container_name: api-monsters
+    ports:
+      - "8083:8080"
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo-monsters
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=monsters_db
+    depends_on:
+      - mongo-monsters
+    networks:
+      - api_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mongo-monsters:
+    image: mongo:latest
+    container_name: mongo-monsters
+    ports:
+      - "27021:27017"
+    environment:
+      MONGO_INITDB_DATABASE: monsters_db
+    volumes:
+      - mongo-monsters_data:/data/db
     networks:
       - api_network
 
@@ -100,7 +136,7 @@ services:
     image: mongo:latest
     container_name: mongo-invocations
     ports:
-      - "27020:27017"
+      - "27022:27017"
     environment:
       MONGO_INITDB_DATABASE: api-invocationsdb
     volumes:
@@ -116,3 +152,4 @@ volumes:
   mongo-monsters_data:
   mongodb_player_data:
   mongo-invocations_data:
+  mongo-authentification_data:
