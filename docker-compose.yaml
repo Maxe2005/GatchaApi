@@ -161,6 +161,42 @@ services:
     networks:
       - api_network
 
+  # API Generate Gatcha
+  api-generate-gatcha:
+    build:
+      context: ./API_generate_gatcha
+      dockerfile: Dockerfile
+    container_name: api-generate-gatcha
+    ports:
+      - "8084:8000"
+    networks:
+      - api_network
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=admin
+      - MINIO_SECRET_KEY=password123
+      - MINIO_BUCKET_NAME=gatcha-assets
+      - MINIO_PUBLIC_URL=http://localhost:9000
+    depends_on:
+      - minio
+
+  # MinIO Service
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password123
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - api_network
+
 networks:
   api_network:
     driver: bridge
@@ -170,3 +206,4 @@ volumes:
   mongodb_player_data:
   mongo-invocations_data:
   mongo-authentification_data:
+  minio_data:

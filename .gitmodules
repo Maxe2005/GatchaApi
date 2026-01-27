@@ -17,8 +17,12 @@
 [submodule "API_invocations"]
 	path = API_invocations
 	url = https://github.com/Maxe2005/API_invocations.git
-	branch = dev
+	branch = dev_monsters
 [submodule "Gatcha_Front"]
 	path = Gatcha_Front
 	url = https://github.com/Maxe2005/Gatcha_Front.git
+	branch = dev_monsters
+[submodule "API_generate_gatcha"]
+	path = API_generate_gatcha
+	url = https://github.com/Maxe2005/API_generate_gatcha.git
 	branch = master
