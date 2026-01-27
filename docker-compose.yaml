@@ -135,6 +135,7 @@ services:
       - EXTERNAL_API_AUTH_BASE_URL=http://api-authentification:8080
       - EXTERNAL_API_CONNECTION_TIMEOUT=5000
       - EXTERNAL_API_READ_TIMEOUT=5000
+      - APP_AUTH_ENABLED=true
     depends_on:
       - mongo-invocations
       - api-monsters
