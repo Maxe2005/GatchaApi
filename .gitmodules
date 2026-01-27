@@ -1,15 +1,24 @@
 [submodule "API_authentification"]
 	path = API_authentification
 	url = https://github.com/Maxe2005/API_authentification.git
+	branch = maxDevTest
 [submodule "API_joueur"]
 	path = API_joueur
 	url = https://github.com/Maxe2005/API_joueur.git
+	branch = maxDevTest
 [submodule "API_monstres"]
 	path = API_monstres
 	url = https://github.com/Maxe2005/API_monstres.git
+	branch = maxDevTest
 [submodule "API_combat"]
 	path = API_combat
 	url = https://github.com/Maxe2005/API_combat.git
+	branch = master
 [submodule "API_invocations"]
 	path = API_invocations
 	url = https://github.com/Maxe2005/API_invocations.git
+	branch = dev
+[submodule "Gatcha_Front"]
+	path = Gatcha_Front
+	url = https://github.com/Maxe2005/Gatcha_Front.git
+	branch = master

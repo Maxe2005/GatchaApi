@@ -1,0 +1,172 @@
+services:
+  # Gatcha Front
+  gatcha-front:
+    build:
+      context: ../Gatcha_Front
+      dockerfile: Dockerfile
+    container_name: gatcha-front
+    ports:
+      - "3000:80"
+    depends_on:
+      - api-authentification
+      - api-invocations
+    networks:
+      - api_network
+
+  # API Authentification
+  api-authentification:
+    build:
+      context: ./API_authentification
+      dockerfile: Dockerfile
+    container_name: api-authentification
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo-authentification
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=auth_db
+    depends_on:
+      - mongo-authentification
+    networks:
+      - api_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  mongo-authentification:
+    image: mongo:latest
+    container_name: mongo-authentification
+    ports:
+      - '27019:27017'
+    restart: on-failure
+    environment:
+      MONGO_INITDB_DATABASE: auth_db
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo-authentification_data:/data/db
+    networks:
+      - api_network
+
+  # API Joueur
+  api-joueur:
+    build:
+      context: ./API_joueur
+      dockerfile: Dockerfile
+    container_name: api-joueur
+    ports:
+      - "8082:8080"
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo-player
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=gatcha-player-db
+    depends_on:
+      - mongo-player
+    networks:
+      - api_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mongo-player:
+    image: mongo:latest
+    container_name: mongo-player
+    ports:
+      - "27020:27017"
+    environment:
+      MONGO_INITDB_DATABASE: gatcha-player-db
+    volumes:
+      - ./API_joueur/mongo-init:/docker-entrypoint-initdb.d
+      - mongodb_player_data:/data/db
+    networks:
+      - api_network
+
+  # API Monsters
+  api-monsters:
+    build:
+      context: ./API_monstres
+      dockerfile: Dockerfile
+    container_name: api-monsters
+    ports:
+      - "8083:8080"
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo-monsters
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=monsters_db
+    depends_on:
+      - mongo-monsters
+    networks:
+      - api_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mongo-monsters:
+    image: mongo:latest
+    container_name: mongo-monsters
+    ports:
+      - "27021:27017"
+    environment:
+      MONGO_INITDB_DATABASE: monsters_db
+    volumes:
+      - mongo-monsters_data:/data/db
+    networks:
+      - api_network
+
+  # API Invocations
+  api-invocations:
+    build:
+      context: ./API_invocations
+      dockerfile: Dockerfile
+    container_name: api-invocations
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo-invocations
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=api-invocationsdb
+      - EXTERNAL_API_MONSTERS_BASE_URL=http://api-monsters:8080
+      - EXTERNAL_API_PLAYER_BASE_URL=http://api-joueur:8080
+      - EXTERNAL_API_AUTH_BASE_URL=http://api-authentification:8080
+      - EXTERNAL_API_CONNECTION_TIMEOUT=5000
+      - EXTERNAL_API_READ_TIMEOUT=5000
+      - APP_AUTH_ENABLED=true
+    depends_on:
+      - mongo-invocations
+      - api-monsters
+      - api-joueur
+      - api-authentification
+    networks:
+      - api_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mongo-invocations:
+    image: mongo:latest
+    container_name: mongo-invocations
+    ports:
+      - "27022:27017"
+    environment:
+      MONGO_INITDB_DATABASE: api-invocationsdb
+    volumes:
+      - mongo-invocations_data:/data/db
+    networks:
+      - api_network
+
+networks:
+  api_network:
+    driver: bridge
+
+volumes:
+  mongo-monsters_data:
+  mongodb_player_data:
+  mongo-invocations_data:
+  mongo-authentification_data:
