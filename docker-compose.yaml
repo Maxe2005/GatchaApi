@@ -9,6 +9,7 @@ services:
       - "3000:80"
     depends_on:
       - api-authentification
+      - api-joueur
       - api-invocations
     networks:
       - api_network
