@@ -2,12 +2,15 @@ services:
   # Gatcha Front
   gatcha-front:
     build:
-      context: ../Gatcha_Front
+      context: ./Gatcha_Front
       dockerfile: Dockerfile
     container_name: gatcha-front
     ports:
       - "3000:80"
     depends_on:
+      - api-joueur
+      - api-monsters
+      - api-generate-gatcha
       - api-authentification
       - api-invocations
     networks:
@@ -127,9 +130,11 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATA_MONGODB_HOST=mongo-invocations
-      - SPRING_DATA_MONGODB_PORT=27017
-      - SPRING_DATA_MONGODB_DATABASE=api-invocationsdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-invocations:5432/api_invocationsdb
+      - SPRING_DATASOURCE_USERNAME=api_invocations
+      - SPRING_DATASOURCE_PASSWORD=api_invocations
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
       - EXTERNAL_API_MONSTERS_BASE_URL=http://api-monsters:8080
       - EXTERNAL_API_PLAYER_BASE_URL=http://api-joueur:8080
       - EXTERNAL_API_AUTH_BASE_URL=http://api-authentification:8080
@@ -137,7 +142,7 @@ services:
       - EXTERNAL_API_READ_TIMEOUT=5000
       - APP_AUTH_ENABLED=true
     depends_on:
-      - mongo-invocations
+      - postgres-invocations
       - api-monsters
       - api-joueur
       - api-authentification
@@ -149,17 +154,24 @@ services:
       timeout: 10s
       retries: 3
 
-  mongo-invocations:
-    image: mongo:latest
-    container_name: mongo-invocations
+  postgres-invocations:
+    image: postgres:16
+    container_name: postgres-invocations
     ports:
-      - "27022:27017"
+      - "5433:5432"
     environment:
-      MONGO_INITDB_DATABASE: api-invocationsdb
+      POSTGRES_DB: api_invocationsdb
+      POSTGRES_USER: api_invocations
+      POSTGRES_PASSWORD: api_invocations
     volumes:
-      - mongo-invocations_data:/data/db
+      - postgres_invocations_data:/var/lib/postgresql/data
     networks:
       - api_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U api_invocations -d api_invocationsdb" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # API Generate Gatcha
   api-generate-gatcha:
@@ -178,8 +190,29 @@ services:
       - MINIO_SECRET_KEY=password123
       - MINIO_BUCKET_NAME=gatcha-assets
       - MINIO_PUBLIC_URL=http://localhost:9000
+      - DATABASE_URL=postgresql://gatcha_user:gatcha_password@postgres-generate-gatcha:5432/gatcha_db
     depends_on:
       - minio
+      - postgres-generate-gatcha
+
+  postgres-generate-gatcha:
+    image: postgres:16-alpine
+    container_name: postgres-generate-gatcha
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: gatcha_user
+      POSTGRES_PASSWORD: gatcha_password
+      POSTGRES_DB: gatcha_db
+    volumes:
+      - postgres_generate_gatcha_data:/var/lib/postgresql/data
+    networks:
+      - api_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U gatcha_user -d gatcha_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # MinIO Service
   minio:
@@ -197,6 +230,24 @@ services:
     networks:
       - api_network
 
+  # pgAdmin pour gérer toutes les bases PostgreSQL
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - api_network
+    depends_on:
+      - postgres-invocations
+      - postgres-generate-gatcha
+
 networks:
   api_network:
     driver: bridge
@@ -204,6 +255,8 @@ networks:
 volumes:
   mongo-monsters_data:
   mongodb_player_data:
-  mongo-invocations_data:
   mongo-authentification_data:
   minio_data:
+  postgres_invocations_data:
+  postgres_generate_gatcha_data:
+  pgadmin_data:

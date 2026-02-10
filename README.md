@@ -33,6 +33,21 @@ http://localhost:8082/swagger-ui/index.html
 http://localhost:8083/swagger-ui/index.html
 ```
 
+```bash
+# Api Generate gatcha
+http://localhost:8084/docs
+```
+
+```bash
+# pgAdmin
+http://localhost:5050
+```
+
+```bash
+# Api Minio
+http://localhost:9001
+```
+
 ## Mettre à jour les sous-modules
 
 ```bash
