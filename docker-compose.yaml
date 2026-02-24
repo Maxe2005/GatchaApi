@@ -2,7 +2,7 @@ services:
   # Gatcha Front
   gatcha-front:
     build:
-      context: ../Gatcha_Front
+      context: ./Gatcha_Front
       dockerfile: Dockerfile
     container_name: gatcha-front
     ports:
