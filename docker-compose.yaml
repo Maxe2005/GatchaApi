@@ -99,6 +99,8 @@ services:
       - SPRING_DATA_MONGODB_HOST=mongo-monsters
       - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=monsters_db
+      - AUTH_API_HOST=http://api-authentification
+      - AUTH_API_PORT=8080
     depends_on:
       - mongo-monsters
     networks:
