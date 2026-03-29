@@ -45,6 +45,33 @@ http://localhost:8082/swagger-ui/index.html
 http://localhost:8083/swagger-ui/index.html
 ```
 
+## URL github des différentes APIs
+
+```bash
+# Api Invocations
+https://github.com/Maxe2005/API_invocations
+```
+
+```bash
+# Api Authentification
+https://github.com/Maxe2005/API_authentification
+```
+
+```bash
+# Api Joueur
+https://github.com/Maxe2005/API_joueur
+```
+
+```bash
+# Api Monstres
+https://github.com/Maxe2005/API_monstres
+```
+
+```bash
+# Front
+https://github.com/Maxe2005/Gatcha_Front
+```
+
 ## Reset les volumes
 
 ```bash
