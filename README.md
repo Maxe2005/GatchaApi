@@ -1,5 +1,11 @@
 # Jeu de Gatcha
 
+## Mettre à jour les sous-modules
+
+```bash
+git submodule update --remote
+```
+
 ## Lancer le jeu dockerisé
 
 ```bash
@@ -31,12 +37,6 @@ http://localhost:8082/swagger-ui/index.html
 ```bash
 # Api Monstres
 http://localhost:8083/swagger-ui/index.html
-```
-
-## Mettre à jour les sous-modules
-
-```bash
-git submodule update --remote
 ```
 
 ## Reset les volumes
