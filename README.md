@@ -1,5 +1,11 @@
 # Jeu de Gatcha
 
+Développé par Maxence CHOISEL, Rémy MAZINGUE, Mathis MEIER et Esteban CHOLLET--RODRIGUEZ dans le cadre du projet du cours Web API et DATA de l'IMT Nord Europe.
+
+Ce projet est un jeu de Gatcha, où les joueurs peuvent invoquer des monstres, les faire combattre et progresser dans le jeu. Le projet est composé de plusieurs microservices, chacun gérant une partie spécifique du jeu.
+
+Il y a deux versions du projet : celle-ci, présente sur la branche master qui est la version stable basique demandé par le sujet, et une version plus avancée sur la branche master_plus, qui contient des fonctionnalités supplémentaires et des améliorations en particulier dans l'interface utilisateur.
+
 ## Mettre à jour les sous-modules
 
 ```bash
@@ -9,7 +15,7 @@ git submodule update --remote
 ## Lancer le jeu dockerisé
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 ### Url pour accèder au Front et aux Swagger des Api
@@ -46,7 +52,7 @@ docker compose down -v
 docker compose up -d
 ```
 
-## Re-démarer une API après des modifs de config
+## Re-démarer une API après des modifs de config pour (par exemple) l'API Joueur
 
 ```bash
 docker compose down
