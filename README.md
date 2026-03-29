@@ -1,9 +1,17 @@
 # Jeu de Gatcha
 
+Ceci est la version avancée du projet de jeu de Gatcha. Elle intègre en plus des fonctionnalités de base, une interface utilisateur améliorée, deux microservices supplémentaires que sont l'API Combat et l'API Generate Gatcha. La première gère les combats entre les monstres tandis que la seconde est une API admin permettant de générer des monstres avec l'IA et de les ajouter à la base de données.
+
+## Mettre à jour les sous-modules
+
+```bash
+git submodule update --remote
+```
+
 ## Lancer le jeu dockerisé
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 ### Url pour accèder au Front et aux Swagger des Api
@@ -46,12 +54,6 @@ http://localhost:5050
 ```bash
 # Api Minio
 http://localhost:9001
-```
-
-## Mettre à jour les sous-modules
-
-```bash
-git submodule update --remote
 ```
 
 ## Reset les volumes
