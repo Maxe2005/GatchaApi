@@ -8,12 +8,13 @@ Il y a deux versions du projet : celle-ci, présente sur la branche master qui e
 
 ## Initialiser le projet
 
-clonez le projet avec les sous-modules pour récupérer les différentes APIs et le front-end
+Clonez le projet avec les sous-modules pour récupérer les différentes APIs et le front-end
+
 ```bash
 git clone --recurse-submodules https://github.com/Maxe2005/GatchaApi
 ```
 
-si vous avez déjà cloné le projet sans les sous-modules, vous pouvez les initialiser et les mettre à jour avec les commandes suivantes :
+Si vous avez déjà cloné le projet sans les sous-modules, vous pouvez les initialiser et les mettre à jour avec la commande suivante :
 
 ```bash
 git submodule update --init --recursive.
