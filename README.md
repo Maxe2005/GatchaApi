@@ -6,6 +6,19 @@ Ce projet est un jeu de Gatcha, où les joueurs peuvent invoquer des monstres, l
 
 Il y a deux versions du projet : celle-ci, présente sur la branche master qui est la version stable basique demandé par le sujet, et une version plus avancée sur la branche master_plus, qui contient des fonctionnalités supplémentaires et des améliorations en particulier dans l'interface utilisateur.
 
+## Initialiser le projet
+
+clonez le projet avec les sous-modules pour récupérer les différentes APIs et le front-end
+```bash
+git clone --recurse-submodules https://github.com/Maxe2005/GatchaApi
+```
+
+si vous avez déjà cloné le projet sans les sous-modules, vous pouvez les initialiser et les mettre à jour avec les commandes suivantes :
+
+```bash
+git submodule update --init --recursive.
+```
+
 ## Mettre à jour les sous-modules
 
 ```bash
