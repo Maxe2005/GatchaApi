@@ -2,6 +2,30 @@
 
 Ceci est la version avancée du projet de jeu de Gatcha. Elle intègre en plus des fonctionnalités de base, une interface utilisateur améliorée, deux microservices supplémentaires que sont l'API Combat et l'API Generate Gatcha. La première gère les combats entre les monstres tandis que la seconde est une API admin permettant de générer des monstres avec l'IA et de les ajouter à la base de données.
 
+## Initialiser le projet
+
+### Clonez le projet avec les sous-modules pour récupérer les différentes APIs et le front-end
+
+```bash
+git clone --recurse-submodules https://github.com/Maxe2005/GatchaApi
+```
+
+Si vous avez déjà cloné le projet sans les sous-modules, vous pouvez les initialiser et les mettre à jour avec la commande suivante :
+
+```bash
+git submodule update --init --recursive
+```
+
+### Initializer le .env
+
+Copiez le fichier `.env.example` à la racine du projet et renommez-le en `.env`.
+
+```bash
+cp .env.example .env
+```
+
+Ce fichier contient les variables d'environnement nécessaires pour la configuration de l'application. Vous devez y inscrire notamment les clés API pour l'API de Gémini si vous souhaitez utiliser la fonctionnalité admin de génération de nouveaux monstres avec l'IA.
+
 ## Mettre à jour les sous-modules
 
 ```bash

@@ -9,7 +9,7 @@
 [submodule "API_monstres"]
 	path = API_monstres
 	url = https://github.com/Maxe2005/API_monstres.git
-	branch = master
+	branch = dev_plus
 [submodule "API_combat"]
 	path = API_combat
 	url = https://github.com/mathismr/API_Combat.git
