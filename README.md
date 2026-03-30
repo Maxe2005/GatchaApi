@@ -17,7 +17,7 @@ git clone --recurse-submodules https://github.com/Maxe2005/GatchaApi
 Si vous avez déjà cloné le projet sans les sous-modules, vous pouvez les initialiser et les mettre à jour avec la commande suivante :
 
 ```bash
-git submodule update --init --recursive.
+git submodule update --init --recursive
 ```
 
 ## Mettre à jour les sous-modules
