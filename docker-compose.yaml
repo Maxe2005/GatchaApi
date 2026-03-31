@@ -190,13 +190,17 @@ services:
     networks:
       - api_network
     environment:
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
       - MINIO_ENDPOINT=minio:9000
       - MINIO_ACCESS_KEY=admin
       - MINIO_SECRET_KEY=password123
       - MINIO_BUCKET_NAME=gatcha-assets
       - MINIO_PUBLIC_URL=http://localhost:9000
-      - DATABASE_URL=postgresql://gatcha_user:gatcha_password@postgres-generate-gatcha:5432/gatcha_db
+      - POSTGRES_HOST=postgres-generate-gatcha
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=gatcha_user
+      - POSTGRES_PASSWORD=gatcha_password
+      - POSTGRES_DB=gatcha_db
+      - INVOCATION_API_URL=http://api-invocations:8080
     depends_on:
       - minio
       - postgres-generate-gatcha
@@ -277,7 +281,7 @@ services:
       - api-generate-gatcha
       - redis
     volumes:
-      - .:/app
+      - ./API_generate_gatcha:/app
     env_file:
       - .env
     extra_hosts:
