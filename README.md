@@ -93,3 +93,53 @@ docker compose up -d
 docker compose down
 docker compose build --no-cache api-joueur
 ```
+
+## Initialiser pgadmin
+
+Lien pour pgadmin
+
+```bash
+http://localhost:5050
+```
+
+### Ajouter la db api-invocation
+
+Clic droit sur Serveur -> Register -> Serveur...
+
+- General > Name : Invocation (ou ce que vous voulez)
+- Connection:
+    - Hostname/address : postgres-invocations
+    - Port : 5432
+    - Maintenance database : api_invocationsdb
+    - Username : api_invocations
+    - Password : api_invocations
+    - Save Password : coché
+
+### Ajouter la db api-generate-gatcha
+
+Clic droit sur Serveur -> Register -> Serveur...
+
+- General > Name : Generate Gatcha (ou ce que vous voulez)
+- Connection:
+    - Hostname/address : postgres-generate-gatcha
+    - Port : 5432
+    - Maintenance database : gatcha_db
+    - Username : gatcha_user
+    - Password : gatcha_password
+    - Save Password : coché
+
+### Accéder aux tables
+
+Exemple avec Invocation (créé précédemment) :
+
+Servers -> Invocation -> Databases -> api_invocationdb -> Schemas -> public -> Tables -> <clic droit sur une table (ex : monsters)> -> View/Edit Data -> All Rows
+
+## Acceder à la db images Minio
+
+```bash
+http://localhost:9001
+```
+
+Username : admin
+
+Password : password123
