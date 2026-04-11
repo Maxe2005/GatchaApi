@@ -33,7 +33,7 @@ services:
     networks:
       - api_network
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -41,7 +41,7 @@ services:
     image: mongo:latest
     container_name: mongo-authentification
     ports:
-      - '27019:27017'
+      - "27019:27017"
     restart: on-failure
     environment:
       MONGO_INITDB_DATABASE: auth_db
@@ -72,7 +72,7 @@ services:
     networks:
       - api_network
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -110,7 +110,7 @@ services:
     networks:
       - api_network
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -155,7 +155,7 @@ services:
     networks:
       - api_network
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -174,7 +174,7 @@ services:
     networks:
       - api_network
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U api_invocations -d api_invocationsdb" ]
+      test: ["CMD-SHELL", "pg_isready -U api_invocations -d api_invocationsdb"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -207,7 +207,7 @@ services:
       - redis
       - api-authentification
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -226,7 +226,7 @@ services:
     networks:
       - api_network
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U gatcha_user -d gatcha_db" ]
+      test: ["CMD-SHELL", "pg_isready -U gatcha_user -d gatcha_db"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -256,9 +256,13 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGPASS_FILE: /pgpass/.pgpass
+      PGADMIN_SERVER_JSON_FILE: /pgadmin4/servers.json
     volumes:
       - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
+      - ./pgadmin/pgpass:/pgpass/.pgpass:ro
     networks:
       - api_network
     depends_on:

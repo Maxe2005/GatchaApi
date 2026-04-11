@@ -1,0 +1,2 @@
+postgres-invocations:5432:api_invocationsdb:api_invocations:api_invocations
+postgres-generate-gatcha:5432:gatcha_db:gatcha_user:gatcha_password
