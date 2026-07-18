@@ -4,6 +4,16 @@ Développé par Maxence CHOISEL, Rémy MAZINGUE, Mathis MEIER et Esteban CHOLLET
 
 Ce projet est un jeu de Gatcha, où les joueurs peuvent invoquer des monstres, les faire combattre et progresser dans le jeu. Le projet est composé de plusieurs microservices, chacun gérant une partie spécifique du jeu.
 
+## Démarrage rapide avec Makefile
+
+Un `Makefile` est disponible à la racine pour raccourcir les commandes les plus courantes (stack Docker, sous-modules, front-end). Listez tous les raccourcis disponibles avec :
+
+```bash
+make help
+```
+
+Les sections ci-dessous détaillent les commandes manuelles équivalentes, utiles si `make` n'est pas disponible ou pour comprendre ce que fait chaque raccourci.
+
 ## Initialiser le projet
 
 ### Clonez le projet avec les sous-modules pour récupérer les différentes APIs et le front-end
@@ -23,7 +33,7 @@ git submodule update --init --recursive
 Copiez le fichier `.env.example` à la racine du projet et renommez-le en `.env`.
 
 ```bash
-cp .env.example .env
+cp .env.exemple .env
 ```
 
 Ce fichier contient les variables d'environnement nécessaires pour la configuration de l'application. Vous devez y inscrire notamment les clés API pour l'API de Gémini si vous souhaitez utiliser la fonctionnalité admin de génération de nouveaux monstres avec l'IA.
