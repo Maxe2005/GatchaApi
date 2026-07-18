@@ -1,6 +1,8 @@
 # Jeu de Gatcha
 
-Ceci est la version avancée du projet de jeu de Gatcha. Elle intègre en plus des fonctionnalités de base, une interface utilisateur améliorée, deux microservices supplémentaires que sont l'API Combat et l'API Generate Gatcha. La première gère les combats entre les monstres tandis que la seconde est une API admin permettant de générer des monstres avec l'IA et de les ajouter à la base de données.
+Développé par Maxence CHOISEL, Rémy MAZINGUE, Mathis MEIER et Esteban CHOLLET--RODRIGUEZ dans le cadre du projet du cours Web API et DATA de l'IMT Nord Europe.
+
+Ce projet est un jeu de Gatcha, où les joueurs peuvent invoquer des monstres, les faire combattre et progresser dans le jeu. Le projet est composé de plusieurs microservices, chacun gérant une partie spécifique du jeu.
 
 ## Initialiser le projet
 
@@ -80,6 +82,33 @@ http://localhost:5050
 http://localhost:9001
 ```
 
+## URL github des différentes APIs
+
+```bash
+# Api Invocations
+https://github.com/Maxe2005/API_invocations
+```
+
+```bash
+# Api Authentification
+https://github.com/Maxe2005/API_authentification
+```
+
+```bash
+# Api Joueur
+https://github.com/Maxe2005/API_joueur
+```
+
+```bash
+# Api Monstres
+https://github.com/Maxe2005/API_monstres
+```
+
+```bash
+# Front
+https://github.com/Maxe2005/Gatcha_Front
+```
+
 ## Reset les volumes
 
 ```bash
@@ -87,7 +116,7 @@ docker compose down -v
 docker compose up -d
 ```
 
-## Re-démarer une API après des modifs de config
+## Re-démarer une API après des modifs de config pour (par exemple) l'API Joueur
 
 ```bash
 docker compose down

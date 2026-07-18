@@ -12,6 +12,7 @@ services:
       - api-monsters
       - api-generate-gatcha
       - api-authentification
+      - api-joueur
       - api-invocations
     networks:
       - api_network
