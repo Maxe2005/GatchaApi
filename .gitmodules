@@ -9,7 +9,7 @@
 [submodule "API_monstres"]
 	path = API_monstres
 	url = https://github.com/Maxe2005/API_monstres.git
-	branch = dev_plus
+	branch = master
 [submodule "API_Combat"]
 	path = API_Combat
 	url = https://github.com/mathismr/API_Combat.git
@@ -17,11 +17,11 @@
 [submodule "API_invocations"]
 	path = API_invocations
 	url = https://github.com/Maxe2005/API_invocations.git
-	branch = dev_monsters
+	branch = master
 [submodule "Gatcha_Front"]
 	path = Gatcha_Front
 	url = https://github.com/Maxe2005/Gatcha_Front.git
-	branch = master_plus
+	branch = master
 [submodule "API_generate_gatcha"]
 	path = API_generate_gatcha
 	url = https://github.com/Maxe2005/API_generate_gatcha.git
