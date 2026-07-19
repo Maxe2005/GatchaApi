@@ -28,6 +28,17 @@ services:
       - SPRING_DATA_MONGODB_HOST=mongo-authentification
       - SPRING_DATA_MONGODB_PORT=27017
       - SPRING_DATA_MONGODB_DATABASE=auth_db
+      - SPRING_DATA_MONGODB_USERNAME=mongoadmin
+      - SPRING_DATA_MONGODB_PASSWORD=password
+      - SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE=admin
+      # Secrets de chiffrement des tokens — fournis par le .env racine
+      - AUTH_SECRET=${AUTH_SECRET:?AUTH_SECRET manquant dans le .env racine (voir .env.exemple)}
+      - AUTH_SALT=${AUTH_SALT:?AUTH_SALT manquant dans le .env racine (voir .env.exemple)}
+      # Comptes par défaut optionnels (seedés au démarrage si renseignés)
+      - DEFAULT_ADMIN_USERNAME=${DEFAULT_ADMIN_USERNAME:-}
+      - DEFAULT_ADMIN_PASSWORD=${DEFAULT_ADMIN_PASSWORD:-}
+      - DEFAULT_USER_USERNAME=${DEFAULT_USER_USERNAME:-}
+      - DEFAULT_USER_PASSWORD=${DEFAULT_USER_PASSWORD:-}
     depends_on:
       - mongo-authentification
     networks:
@@ -85,7 +96,6 @@ services:
     environment:
       MONGO_INITDB_DATABASE: gatcha-player-db
     volumes:
-      - ./API_joueur/mongo-init:/docker-entrypoint-initdb.d
       - mongodb_player_data:/data/db
     networks:
       - api_network
@@ -139,8 +149,6 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-invocations:5432/api_invocationsdb
       - SPRING_DATASOURCE_USERNAME=api_invocations
       - SPRING_DATASOURCE_PASSWORD=api_invocations
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
       - EXTERNAL_API_MONSTERS_BASE_URL=http://api-monsters:8080
       - EXTERNAL_API_PLAYER_BASE_URL=http://api-joueur:8080
       - EXTERNAL_API_AUTH_BASE_URL=http://api-authentification:8080
@@ -235,7 +243,7 @@ services:
       MINIO_ROOT_USER: admin
       MINIO_ROOT_PASSWORD: password123
     volumes:
-      - ./API_generate_gatcha/minio_data:/data
+      - minio_data:/data
     command: server /data --console-address ":9001"
     networks:
       - api_network

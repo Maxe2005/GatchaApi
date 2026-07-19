@@ -40,7 +40,7 @@ make restart-celery               # the API_generate_gatcha Celery worker
 make front-dev / front-build / front-preview / front-lint / front-format / front-typecheck
 ```
 
-The root Makefile only touches the root `docker-compose.yaml`. Each submodule also has its own standalone `docker-compose.yml` for running that service in isolation — **do not run both at once**, they use the same container names/ports and will conflict.
+The root `docker-compose.yaml` is the **only** way to run the stack: the submodules no longer ship a standalone `docker-compose.yml`, and their Makefiles (`make up/down/restart/logs/...` from inside a submodule) just proxy to the root compose file scoped to that one service. All runtime configuration is injected from this repo (root compose `environment:` blocks + root `.env`).
 
 Service URLs once the stack is up: Front `:3000`, API Invocations Swagger `:8080/swagger-ui/index.html`, API Authentification Swagger `:8081/swagger-ui/index.html`, API Joueur Swagger `:8082/swagger-ui/index.html`, API Monstres Swagger `:8083/swagger-ui/index.html`, API Generate Gatcha docs `:8084/docs`, pgAdmin `:5050`, MinIO console `:9001`.
 
@@ -61,7 +61,7 @@ Service URLs once the stack is up: Front `:3000`, API Invocations Swagger `:8080
 ```bash
 make install                                   # creates .venv, installs requirements.txt
 make run                                       # uvicorn app.main:app --reload, port 8000
-make d-up / d-down / d-logs / d-restart        # docker (note the d- prefix, unlike other submodules)
+make up / down / restart / logs                # docker via the ROOT compose (plus celery-up/celery-restart/... for the worker)
 make db-alembic-revision MSG="..." / make db-alembic-up   # Alembic migrations
 .venv/bin/pytest tests/test_validation_service.py::test_name   # single test (no pytest.ini/make test target exists)
 ```
@@ -93,6 +93,6 @@ Standard controller → service → persistence/repository layering, no DDD. Typ
 
 ## Environment
 
-`.env` at the root (copy from `.env.exemple`) holds secrets consumed by `API_generate_gatcha` and its `celery` container via `env_file` — `GEMINI_API_KEY`, `BANANA_API_KEY`, MinIO/Redis/Postgres credentials. The other services get their config purely from `environment:` blocks in `docker-compose.yaml`, no `.env` needed.
+`.env` at the root (copy from `.env.exemple`) holds secrets consumed by `API_generate_gatcha` and its `celery` container via `env_file` — `GEMINI_API_KEY`, `BANANA_API_KEY`, MinIO/Redis/Postgres credentials — plus `AUTH_SECRET`/`AUTH_SALT` (**required**, the compose fails fast if missing) and the optional `DEFAULT_ADMIN_*`/`DEFAULT_USER_*` seed accounts, interpolated into `api-authentification`'s `environment:` block. The other services get their config purely from `environment:` blocks in `docker-compose.yaml`.
 
 None of the submodules are production-hardened — `API_authentification`'s own README explicitly warns it should not be deployed to production as-is.

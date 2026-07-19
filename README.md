@@ -36,7 +36,13 @@ Copiez le fichier `.env.example` à la racine du projet et renommez-le en `.env`
 cp .env.exemple .env
 ```
 
-Ce fichier contient les variables d'environnement nécessaires pour la configuration de l'application. Vous devez y inscrire notamment les clés API pour l'API de Gémini si vous souhaitez utiliser la fonctionnalité admin de génération de nouveaux monstres avec l'IA.
+Ce fichier contient les variables d'environnement nécessaires pour la configuration de l'application. Vous devez y inscrire notamment :
+
+- `AUTH_SECRET` et `AUTH_SALT` (**requis**) : secrets de chiffrement des tokens de l'API d'authentification — la stack refuse de démarrer s'ils sont absents ;
+- les clés API pour l'API de Gémini si vous souhaitez utiliser la fonctionnalité admin de génération de nouveaux monstres avec l'IA ;
+- optionnellement `DEFAULT_ADMIN_USERNAME`/`DEFAULT_ADMIN_PASSWORD` et `DEFAULT_USER_USERNAME`/`DEFAULT_USER_PASSWORD` pour seeder des comptes par défaut au démarrage.
+
+> **Note** : ce `.env` racine est désormais la **seule** source de configuration — les sous-modules n'ont plus de `docker-compose.yml` ni de `.env` docker propres, et ce `docker-compose.yaml` racine est l'unique façon de lancer le projet.
 
 ## Mettre à jour les sous-modules
 

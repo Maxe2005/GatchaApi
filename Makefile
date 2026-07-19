@@ -4,10 +4,9 @@
 # (no --no-cache, no full-stack downtime) — use build-svc-nocache / restart-svc
 # with SVC=<name> for anything not covered by a named shortcut.
 #
-# Does NOT touch each API submodule's own standalone docker-compose.yml —
-# those use the same container names/ports as this root stack and would
-# conflict if run concurrently. All targets here operate on the root
-# docker-compose.yaml only.
+# The submodules no longer ship their own docker-compose: this root
+# docker-compose.yaml is the ONLY way to run the stack. Each submodule's
+# Makefile simply proxies to this same file, scoped to its own service.
 
 .DEFAULT_GOAL := help
 
@@ -38,7 +37,7 @@ down-v: ## Stop and remove all containers AND volumes (destructive: wipes all DB
 
 reset-volumes: ## Reset all volumes and restart the stack fresh (mirrors README "Reset les volumes")
 	docker compose down -v
-	docker compose up -d
+	docker compose up -d --build
 
 ps: ## Show status of all containers in the stack
 	docker compose ps
