@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Git workflow (required — applies here and in every submodule)
+
+For any piece of work beyond a trivial one-line fix: create a dedicated branch (`feat/...`, `fix/...`, `perf/...`) from the repo's integration branch (`development`/`dev` when it exists, `master` otherwise), commit in atomic steps with conventional-commit messages in French (`feat:`/`fix:`/`perf:`/`docs:` plus a body explaining the why), then merge back with `--no-ff`. Never commit sizeable work directly on the integration branch. Submodule commits are independent of this repo: finish and merge inside the submodule first, then update the pinned commit here in a dedicated commit.
+
 ## Repository shape
 
 This is the **root/orchestration repo** for a Gatcha game built as microservices. It contains no application code of its own — each service lives in its own git submodule, wired together by the root `docker-compose.yaml` and shortcutted by the root `Makefile`.
