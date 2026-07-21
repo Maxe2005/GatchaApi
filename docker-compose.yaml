@@ -77,6 +77,9 @@ services:
       - SPRING_DATA_MONGODB_DATABASE=gatcha-player-db
       - AUTH_API_HOST=http://api-authentification
       - AUTH_API_PORT=8080
+      # Comptes par défaut optionnels (mêmes usernames que api-authentification, pour la correspondance des profils)
+      - DEFAULT_ADMIN_USERNAME=${DEFAULT_ADMIN_USERNAME:-}
+      - DEFAULT_USER_USERNAME=${DEFAULT_USER_USERNAME:-}
     depends_on:
       - mongo-player
       - api-authentification
